@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Misteri Kotak Piza! | Matematik Tahun 2</title>
+<style>
+:root{--orange:#ff9f43;--red:#f45b55;--yellow:#ffe66d;--green:#48bd8b;--purple:#8875e8;--ink:#493b54}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;color:var(--ink);background:radial-gradient(circle at 10% 15%,#fff1b8 0 5px,transparent 6px),radial-gradient(circle at 90% 30%,#ffd7d0 0 6px,transparent 7px),linear-gradient(135deg,#fff7dc,#ffe8e0 55%,#e9e4ff);background-size:75px 75px,95px 95px,auto;min-height:100vh;padding:20px 12px 35px}
+button{font:inherit;cursor:pointer}
+button:focus-visible{outline:4px solid #4436a7;outline-offset:4px}
+.app{max-width:900px;margin:auto;background:rgba(255,255,255,.94);border:4px solid white;border-radius:30px;box-shadow:0 12px 0 #e8c6bd,0 20px 45px #795d6b22;overflow:hidden}
+header{background:linear-gradient(120deg,#ff9855,#ffbd63);padding:23px 15px 19px;text-align:center;border-bottom:5px dashed #fff0bc}
+.header-icon{font-size:43px;display:block;line-height:1.2;animation:bob 2s ease-in-out infinite}
+h1{margin:4px 0 0;font-size:clamp(27px,5vw,43px);color:white;text-shadow:2px 3px 0 #d96b38;line-height:1.2}
+.subtitle{color:#733d30;font-size:16px;font-weight:700;margin:6px 0 0}
+main{padding:22px clamp(12px,4vw,32px) 30px}
+.question{display:flex;align-items:center;gap:14px;background:#fff6c9;border:3px solid #ffda67;border-radius:20px;padding:15px;margin-bottom:18px}
+.character{font-size:48px;flex-shrink:0}.question p{margin:0;line-height:1.5}.question strong{color:#d8543f;font-size:18px}
+.instruction{text-align:center;font-weight:800;font-size:19px;margin:18px 0 12px}
+.boxes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.pizza-box{border:3px solid #e5a04e;border-radius:19px;background:linear-gradient(145deg,#ffcc75,#ffa84b);padding:12px 7px;min-width:0;color:#703f2d;box-shadow:0 5px 0 #d98839;transition:transform .2s;background-clip:padding-box;min-height:145px}
+.pizza-box:hover{transform:translateY(-3px)}.pizza-box.open{background:#fff5df;border-color:#65c99b;box-shadow:0 5px 0 #3ca87a}
+.box-icon{display:block;font-size:clamp(38px,7vw,54px);line-height:1.2;margin-bottom:5px}.box-label{display:block;font-size:16px;font-weight:800}.box-status{display:block;font-size:12px;margin-top:3px}
+.slices{display:none;grid-template-columns:repeat(2,1fr);gap:2px;margin:8px auto 0;max-width:95px;padding:5px;border-radius:12px;background:#f8e1b4}.open .slices{display:grid}
+.slice{display:grid;place-items:center;background:#fff9e9;border-radius:8px;font-size:clamp(22px,4vw,30px);aspect-ratio:1;animation:pop .25s ease-out}
+.counter{margin:20px 0;padding:13px;border-radius:17px;background:#f0edff;border:2px dashed #b6a8ff;text-align:center}.counter p{margin:0 0 8px;font-weight:800}
+.counter-display{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;font-size:22px;font-weight:800}.counter-display span{background:white;border-radius:12px;padding:3px 12px;box-shadow:0 3px 0 #ddd5ff}.counter-display .plus{padding:0;background:transparent;box-shadow:none;color:#7863d6}
+.answer-title{text-align:center;font-size:21px;font-weight:800;margin:23px 0 12px}
+.answers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.answer{background:white;border:3px solid #d9d0f5;border-radius:16px;padding:13px 4px;color:#554477;font-size:clamp(21px,4vw,29px);font-weight:800;box-shadow:0 4px 0 #c7b9eb;transition:transform .15s}
+.answer:hover{transform:translateY(-3px)}.answer:disabled{cursor:default;opacity:.65}
+.feedback{display:none;margin-top:17px;padding:14px;border-radius:17px;font-size:16px;font-weight:700;line-height:1.6;text-align:center}.feedback.show{display:block;animation:pop .3s ease}.feedback.wrong{background:#fff0ed;border:2px solid #ffb5a9}.feedback.right{background:#e3fff1;border:2px solid #76d8a7}
+.bottom-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}
+.btn{border:none;border-radius:15px;padding:12px 20px;font-size:16px;font-weight:800;box-shadow:0 4px 0 #00000020;transition:transform .15s}.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(2px)}
+.btn-reset{background:#eee9ff;color:#6552ae}.btn-sound{background:#fff0c0;color:#785023}
+.overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:16px;background:#372545b8;z-index:10;overflow-y:auto}.overlay.show{display:flex}
+.modal{width:min(100%,530px);max-height:92vh;overflow-y:auto;background:#fffdf6;border:5px solid white;border-radius:28px;padding:25px 20px;text-align:center;box-shadow:0 12px 0 #e2b9a9,0 25px 70px #0003;animation:pop .4s ease;position:relative}
+.modal-emoji{font-size:64px;line-height:1.2}.modal h2{color:#ef7444;font-size:clamp(25px,5vw,34px);margin:10px 0;line-height:1.2}.modal p{font-size:17px;line-height:1.65;margin:12px 0}
+.math-magic{background:#fff0bc;border:2px dashed #ffb84f;border-radius:17px;padding:12px;font-size:23px;font-weight:800;margin:15px 0}.math-magic .multiply{color:#e45c40;font-size:29px}
+.btn-start{width:100%;background:linear-gradient(100deg,#ff9855,#ffbd55);color:#603a26;padding:14px;font-size:19px;margin-top:8px}.btn-close{margin-top:10px;background:#eee9ff;color:#6552ae}
+.journey-card{background:#e8fff1;border:3px dashed #68c99b;border-radius:20px;padding:18px;margin:18px 0}.journey-card .big-math{font-size:clamp(28px,7vw,43px);font-weight:800;color:#16885b}
+.confetti{position:fixed;top:-15px;width:10px;height:15px;z-index:20;pointer-events:none;animation:fall 2.8s linear forwards}
+footer{background:#fff5e8;text-align:center;padding:12px;font-size:13px;color:#9b7467}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-5px) rotate(4deg)}}
+@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:0}}
+@media(max-width:430px){body{padding:8px 6px 20px}.app{border-radius:23px}header{padding:18px 8px}main{padding:15px 11px 22px}.question{gap:8px;padding:10px}.character{font-size:38px}.question strong{font-size:16px}.boxes{gap:7px}.pizza-box{padding:10px 3px;min-height:125px}.box-label{font-size:14px}.box-status{font-size:11px}.answers{gap:7px}.answer{border-radius:12px;padding:11px 2px}.modal{padding:20px 14px}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<header><span class="header-icon" aria-hidden="true">🍕</span><h1>Misteri Kotak Piza!</h1><p class="subtitle">🚀 Set Induksi · Matematik Tahun 2</p></header>
+<main>
+<section class="question"><span class="character" aria-hidden="true">🧑‍🍳</span><p><strong>Hai, detektif piza!</strong><br>Ada <b>3 kotak piza</b>. Setiap kotak ada <b>4 keping piza</b>. Berapa jumlah semua piza?</p></section>
+<p class="instruction">🔎 Klik setiap kotak untuk membuka misterinya!</p>
+<section class="boxes" aria-label="Tiga kotak piza">
+<button class="pizza-box" data-box="0" aria-label="Buka kotak piza 1" aria-expanded="false"><span class="box-icon">📦</span><span class="box-label">Kotak 1</span><span class="box-status">Tekan untuk buka</span><span class="slices" aria-hidden="true"><span class="slice">🍕</span><span class="slice">🍕</span><span class="slice">🍕</span><span class="slice">🍕</span></span></button>
+<button class="pizza-box" data-box="1" aria-label="Buka kotak piza 2" aria-expanded="false"><span class="box-icon">📦</span><span class="box-label">Kotak 2</span><span class="box-status">Tekan untuk buka</span><span class="slices" aria-hidden="true"><span class="slice">🍕</span><span class="slice">🍕</span><span class="slice">🍕</span><span class="slice">🍕</span></span></button>
+<button class="pizza-box" data-box="2" aria-label="Buka kotak piza 3" aria-expanded="false"><span class="box-icon">📦</span><span class="box-label">Kotak 3</span><span class="box-status">Tekan untuk buka</span><span class="slices" aria-hidden="true"><span class="slice">🍕</span><span class="slice">🍕</span><span class="slice">🍕</span><span class="slice">🍕</span></span></button>
+</section>
+<section class="counter" aria-live="polite"><p>🧮 Jom kumpulkan piza yang kita jumpa!</p><div class="counter-display" id="counter"><span>❓</span><span class="plus">+</span><span>❓</span><span class="plus">+</span><span>❓</span></div><p id="counter-caption" style="margin-top:10px;font-size:14px">Buka kotak untuk mula mengira.</p></section>
+<p class="answer-title">🎯 Berapakah jumlah semua piza?</p>
+<section class="answers" aria-label="Pilihan jawapan"><button class="answer" data-answer="7">7</button><button class="answer" data-answer="10">10</button><button class="answer" data-answer="12">12</button><button class="answer" data-answer="14">14</button></section>
+<div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+<div class="bottom-actions"><button class="btn btn-reset" id="resetBtn">🔄 Cuba Semula</button><button class="btn btn-sound" id="soundBtn" aria-pressed="false">🔇 Bunyi: Mati</button></div>
+</main><footer>🌟 Belajar sambil bermain · Matematik Tahun 2 🌟</footer>
+</div>
+<div class="overlay" id="secretModal" role="dialog" aria-modal="true" aria-labelledby="secretTitle"><div class="modal"><div class="modal-emoji" aria-hidden="true">🎉🍕✨</div><h2 id="secretTitle">TAHNIAH, DETEKTIF!</h2><p>Hebatnya! Kamu berjaya menyelesaikan misteri kotak piza!</p><div class="math-magic">4 + 4 + 4 = 12<br><span style="font-size:16px">Tetapi ada cara yang lebih magik!</span><br><span class="multiply">3 × 4 = 12</span></div><p>Tahu tak? Kita boleh menggunakan <b>DARAB</b> untuk mengira kumpulan yang mempunyai bilangan sama dengan lebih cepat!</p><p>🚀 Sedia untuk meneruskan <b>Kembara Darab</b>?</p><button class="btn btn-start" id="startBtn">🚀 Mula Kembara!</button></div></div>
+<div class="overlay" id="journeyModal" role="dialog" aria-modal="true" aria-labelledby="journeyTitle"><div class="modal"><div class="modal-emoji" aria-hidden="true">🚀🌟</div><h2 id="journeyTitle">Kembara Darab Bermula!</h2><p>Kamu sudah menemui rahsia darab! Mari kita lihat bagaimana darab membantu kita mengira kumpulan yang sama banyak.</p><div class="journey-card"><p>3 kumpulan, setiap kumpulan ada 4 piza.</p><div class="big-math">3 × 4 = 12</div><p>3 kumpulan × 4 piza = 12 piza semuanya!</p></div><button class="btn btn-start" id="finishBtn">⭐ Selesai Set Induksi</button><button class="btn btn-close" id="backBtn">↩ Lihat Kad Rahsia</button></div></div>
+<div id="announcer" class="sr-only" aria-live="polite"></div>
+<script>
+(() => {
+const boxes=[...document.querySelectorAll('.pizza-box')],answerButtons=[...document.querySelectorAll('.answer')],counter=document.getElementById('counter'),caption=document.getElementById('counter-caption'),feedback=document.getElementById('feedback'),secretModal=document.getElementById('secretModal'),journeyModal=document.getElementById('journeyModal'),soundBtn=document.getElementById('soundBtn'),announcer=document.getElementById('announcer');
+let opened=[false,false,false],answeredCorrectly=false,soundEnabled=false,audioContext=null;
+function speak(text){announcer.textContent=text}
+function playTone(frequency,duration,delay=0,type='sine'){if(!soundEnabled)return;try{audioContext=audioContext||(new(window.AudioContext||window.webkitAudioContext)());if(audioContext.state==='suspended')audioContext.resume();const oscillator=audioContext.createOscillator(),gain=audioContext.createGain(),start=audioContext.currentTime+delay;oscillator.type=type;oscillator.frequency.setValueAtTime(frequency,start);gain.gain.setValueAtTime(.0001,start);gain.gain.exponentialRampToValueAtTime(.12,start+.02);gain.gain.exponentialRampToValueAtTime(.0001,start+duration);oscillator.connect(gain);gain.connect(audioContext.destination);oscillator.start(start);oscillator.stop(start+duration+.03)}catch(error){}}
+function happySound(){[523,659,784,1047].forEach((note,i)=>playTone(note,.22,i*.12))}
+function renderCounter(){const count=opened.filter(Boolean).length;counter.innerHTML=opened.map((isOpen,index)=>`<span>${isOpen?'4':'❓'}</span>${index<2?'<span class="plus" aria-hidden="true">+</span>':''}`).join('');caption.textContent=count===0?'Buka kotak untuk mula mengira.':count<3?`Kamu sudah membuka ${count} daripada 3 kotak. Teruskan!`:'Semua kotak sudah dibuka! Setiap kotak mempunyai 4 keping piza.'}
+boxes.forEach((box,index)=>box.addEventListener('click',()=>{if(answeredCorrectly)return;opened[index]=!opened[index];box.classList.toggle('open',opened[index]);box.setAttribute('aria-expanded',String(opened[index]));box.querySelector('.box-icon').textContent=opened[index]?'🍕':'📦';box.querySelector('.box-status').textContent=opened[index]?'4 keping piza!':'Tekan untuk buka';playTone(opened[index]?650:400,.12);renderCounter()}));
+function showFeedback(message,type){feedback.className=`feedback show ${type}`;feedback.textContent=message;speak(message)}
+function makeConfetti(){const emojis=['🎉','⭐','✨','🍕','💛','🎊'];for(let i=0;i<65;i++){const piece=document.createElement('span');piece.className='confetti';piece.textContent=emojis[Math.floor(Math.random()*emojis.length)];piece.style.left=Math.random()*100+'vw';piece.style.fontSize=14+Math.random()*15+'px';piece.style.animationDuration=1.8+Math.random()*2+'s';piece.style.animationDelay=Math.random()*.7+'s';document.body.appendChild(piece);piece.addEventListener('animationend',()=>piece.remove())}}
+function showSecret(){answeredCorrectly=true;answerButtons.forEach(button=>button.disabled=true);showFeedback('🎉 Betul! Jumlah semua piza ialah 12!','right');happySound();makeConfetti();setTimeout(()=>{secretModal.classList.add('show');document.getElementById('startBtn').focus()},500)}
+answerButtons.forEach(button=>button.addEventListener('click',()=>{if(answeredCorrectly)return;const answer=Number(button.dataset.answer);if(answer===12)showSecret();else{playTone(250,.18,0,'triangle');showFeedback('😊 Cuba lagi! Jom kira satu-satu atau tambah 4 + 4 + 4. Kamu pasti boleh!','wrong')}}));
+document.getElementById('resetBtn').addEventListener('click',()=>{opened=[false,false,false];answeredCorrectly=false;boxes.forEach(box=>{box.classList.remove('open');box.setAttribute('aria-expanded','false');box.querySelector('.box-icon').textContent='📦';box.querySelector('.box-status').textContent='Tekan untuk buka'});answerButtons.forEach(button=>button.disabled=false);feedback.className='feedback';feedback.textContent='';secretModal.classList.remove('show');journeyModal.classList.remove('show');document.querySelectorAll('.confetti').forEach(piece=>piece.remove());renderCounter();speak('Permainan dimulakan semula.')});
+soundBtn.addEventListener('click',()=>{soundEnabled=!soundEnabled;soundBtn.textContent=soundEnabled?'🔊 Bunyi: Hidup':'🔇 Bunyi: Mati';soundBtn.setAttribute('aria-pressed',String(soundEnabled));if(soundEnabled)playTone(660,.15)});
+document.getElementById('startBtn').addEventListener('click',()=>{secretModal.classList.remove('show');journeyModal.classList.add('show');happySound();document.getElementById('finishBtn').focus()});
+document.getElementById('backBtn').addEventListener('click',()=>{journeyModal.classList.remove('show');secretModal.classList.add('show');document.getElementById('startBtn').focus()});
+document.getElementById('finishBtn').addEventListener('click',()=>{journeyModal.classList.remove('show');speak('Set induksi selesai. Sekarang mari belajar cara mendarab!');feedback.className='feedback show right';feedback.textContent='🌟 Syabas! Kamu telah menyelesaikan Set Induksi Misteri Kotak Piza. Bersedia untuk belajar darab!';document.getElementById('app').scrollIntoView({behavior:'smooth',block:'start'})});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'){if(journeyModal.classList.contains('show')){journeyModal.classList.remove('show');secretModal.classList.add('show');document.getElementById('startBtn').focus()}else if(secretModal.classList.contains('show'))secretModal.classList.remove('show')}});
+renderCounter();
+})();
+</script>
+</body>
+</html>
